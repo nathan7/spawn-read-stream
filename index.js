@@ -24,38 +24,50 @@ function spawnReadStream(bin, args, opts) {
     myOpts.stdio = ['ignore', 'pipe', 'pipe']
 
     var child = spawn(bin, args, opts)
-      , stream = child.stdout
-      , stderr = sprom.buf(child.stderr)
       , resolved = false
       , errored = false
 
-    stream.once('readable', function() {
+    read()
+
+    var stream = child.stdout
+    function read() {
+      if (resolved) return
+      var chunk = stream.read()
+      if (!chunk) return stream.once('readable', read)
+
+      stream.unshift(chunk)
       resolved = true
       resolve(stream)
-    })
+    }
 
-    child.on('error', function(err) {
+    child.on('error', error)
+    function error(err) {
+      if (errored) return
       errored = true
-      stream.emit('error', err)
-    })
+      if (resolved)
+        stream.emit('error', err)
+      else {
+        resolved = true
+        reject(err)
+      }
+    }
 
+    var stderr = sprom(child.stderr)
     child.on('exit', function(code, signal) {
       if (errored) return
-      if (code !== 0 || signal) stderr.then(function(stderr) {
+      if (code === 0 && !signal) return
+      stderr.then(function(stderr) {
         var err = signal
           ? new Error('`' + name + '` killed by signal `' + signal + '`')
           : new Error('`' + name + '` exited with ' + code)
 
         err.name = 'ExitError'
-        err.message += '\n' + stderr
+        err.message += ': ' + stderr
         err.code = code
         err.signal = signal
         err.stderr = stderr
 
-        if (resolved)
-          stream.emit('error', err)
-        else
-          reject(err)
+        error(err)
       })
     })
   })
