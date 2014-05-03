@@ -1,0 +1,16 @@
+{
+  "name": "spawn-read-stream",
+  "version": "1.0.0",
+  "description": "spawn a subprocess to read from it",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nathan7/spawn-read-stream.git"
+  },
+  "author": "Nathan Zadoks",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nathan7/spawn-read-stream/issues"
+  },
+  "homepage": "https://github.com/nathan7/spawn-read-stream"
+}
