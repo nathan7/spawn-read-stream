@@ -27,9 +27,9 @@ function spawnReadStream(bin, args, opts) {
       , resolved = false
       , errored = false
 
-    read()
 
     var stream = child.stdout
+    read()
     function read() {
       if (resolved) return
       var chunk = stream.read()
