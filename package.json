@@ -12,5 +12,9 @@
   "bugs": {
     "url": "https://github.com/nathan7/spawn-read-stream/issues"
   },
-  "homepage": "https://github.com/nathan7/spawn-read-stream"
+  "homepage": "https://github.com/nathan7/spawn-read-stream",
+  "dependencies": {
+    "promise": "^5.0.0",
+    "sprom": "^2.0.0"
+  }
 }
