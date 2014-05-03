@@ -11,6 +11,13 @@ function spawnReadStream(bin, args, opts) {
       args = []
     }
 
+    var name = bin
+    if (Array.isArray(bin)) {
+      name = bin.join(' ')
+      args = bin.concat(args)
+      bin = args.shift()
+    }
+
     var myOpts = opts
         ? Object.create(opts)
         : {}
@@ -36,8 +43,8 @@ function spawnReadStream(bin, args, opts) {
       if (errored) return
       if (code !== 0 || signal) stderr.then(function(stderr) {
         var err = signal
-          ? new Error(bin + ' killed by signal `' + signal + '`')
-          : new Error(bin + ' exited with ' + code)
+          ? new Error('`' + name + '` killed by signal `' + signal + '`')
+          : new Error('`' + name + '` exited with ' + code)
 
         err.name = 'ExitError'
         err.message += '\n' + stderr
