@@ -20,6 +20,8 @@
   For clarity, command is allowed to be an array, for cases like `zfs send`, where `zfs` clearly isn't a very useful description of what command is being run.
   This only makes a difference for error reporting.
 
+  The child `exit` event is re-emitted on the stream.
+
 #### ExitError
 
   * name: `ExitError`
