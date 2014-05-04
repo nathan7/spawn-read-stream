@@ -54,9 +54,8 @@ function spawnReadStream(bin, args, opts) {
 
     var stderr = sprom(child.stderr)
     child.on('exit', function(code, signal) {
-      stream.emit('exit', code, signal)
       if (errored) return
-      if (code === 0 && !signal) return
+      if (code === 0 && !signal) return stream.emit('exit', code, signal)
       stderr.then(function(stderr) {
         var err = signal
           ? new Error('`' + name + '` killed by signal `' + signal + '`')
@@ -69,6 +68,7 @@ function spawnReadStream(bin, args, opts) {
         err.stderr = stderr
 
         error(err)
+        stream.emit('exit', code, signal)
       })
     })
   })
