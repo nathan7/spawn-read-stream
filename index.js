@@ -30,7 +30,7 @@ function spawnReadStream(bin, args, opts) {
 
     var stream = child.stdout
     stream.kill = function() {
-      child.apply(child, arguments)
+      child.kill.apply(child, arguments)
     }
 
     read()
