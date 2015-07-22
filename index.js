@@ -29,6 +29,10 @@ function spawnReadStream(bin, args, opts) {
 
 
     var stream = child.stdout
+    stream.kill = function() {
+      child.apply(child, arguments)
+    }
+
     read()
     function read() {
       if (resolved) return
